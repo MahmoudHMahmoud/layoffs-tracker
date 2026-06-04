@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Layoffs Tracker — Interactive Analytics Dashboard</title>
+  <meta name="description" content="Explore global tech layoffs from 2020-2025 with interactive charts, maps, and deep analytical insights. Filter by company, industry, country, and more.">
+  <meta name="keywords" content="layoffs, tech layoffs, analytics, dashboard, data visualization">
+  <meta name="author" content="Global Layoffs Tracker">
+  <meta property="og:title" content="Global Layoffs Tracker">
+  <meta property="og:description" content="Interactive analytics dashboard exploring global tech layoffs 2020-2025">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/charts.css">
+  <link rel="stylesheet" href="css/dataset.css">
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loading-screen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading analytics data...</div>
+  </div>
+
+  <div class="app">
+    <!-- Sidebar Toggle (Mobile) -->
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <div class="sidebar__logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/>
+              <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>
+              <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="sidebar__title">Global Layoffs</div>
+            <div class="sidebar__subtitle">Analytics Tracker</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar__nav">
+        <div class="sidebar__nav-group">
+          <div class="sidebar__nav-label">Dashboard</div>
+          <div class="sidebar__nav-item active" data-section="overview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Overview
+          </div>
+          <div class="sidebar__nav-item" data-section="timeseries">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Time Series
+          </div>
+        </div>
+
+        <div class="sidebar__nav-group">
+          <div class="sidebar__nav-label">Dimensions</div>
+          <div class="sidebar__nav-item" data-section="companies">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Companies
+          </div>
+          <div class="sidebar__nav-item" data-section="industries">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+            Industries
+          </div>
+          <div class="sidebar__nav-item" data-section="geographic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Geographic
+          </div>
+        </div>
+
+        <div class="sidebar__nav-group">
+          <div class="sidebar__nav-label">Deep Dive</div>
+          <div class="sidebar__nav-item" data-section="funding">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Funding
+          </div>
+          <div class="sidebar__nav-item" data-section="stages">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+            Stages
+          </div>
+          <div class="sidebar__nav-item" data-section="severity">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Severity
+          </div>
+        </div>
+
+        <div class="sidebar__nav-group">
+          <div class="sidebar__nav-label">Data</div>
+          <div class="sidebar__nav-item" data-section="dataset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            Dataset Manager
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar__footer">
+        <button class="sidebar__search-btn" id="open-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search...
+          <kbd>Ctrl+K</kbd>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Filter Bar -->
+      <div class="filter-bar" id="filter-bar"></div>
+
+      <!-- Content -->
+      <div class="content">
+        <section class="section active" id="section-overview"></section>
+        <section class="section" id="section-timeseries"></section>
+        <section class="section" id="section-companies"></section>
+        <section class="section" id="section-industries"></section>
+        <section class="section" id="section-geographic"></section>
+        <section class="section" id="section-funding"></section>
+        <section class="section" id="section-stages"></section>
+        <section class="section" id="section-severity"></section>
+        <section class="section" id="section-dataset"></section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-box">
+      <div class="search-box__input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="search-box__input" id="search-input" placeholder="Search companies, industries, countries..." autocomplete="off">
+      </div>
+      <div class="search-box__results" id="search-results">
+        <div class="search-box__empty">Type to search...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
+  <!-- App -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

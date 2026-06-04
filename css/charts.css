@@ -1,0 +1,292 @@
+/* ============================================
+   CHARTS — Chart Containers & Insights Panels
+   ============================================ */
+
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  backdrop-filter: blur(12px);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+}
+
+.chart-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.chart-card__title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chart-card__subtitle {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.chart-card__controls {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* --- Chart Container --- */
+.chart-container {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+}
+
+.chart-container--sm { min-height: 200px; }
+.chart-container--lg { min-height: 400px; }
+.chart-container--xl { min-height: 500px; }
+
+.chart-container canvas {
+  width: 100% !important;
+  max-height: 500px;
+}
+
+/* --- Map Container --- */
+.map-container {
+  width: 100%;
+  height: 450px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.map-container .leaflet-container {
+  background: var(--bg-secondary) !important;
+  font-family: var(--font-body);
+}
+
+/* Leaflet dark theme overrides */
+.leaflet-tile-pane { filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7); }
+.leaflet-control-zoom a { background: var(--bg-card) !important; color: var(--text-primary) !important; border-color: var(--border-subtle) !important; }
+.leaflet-popup-content-wrapper { background: var(--bg-tooltip) !important; color: var(--text-primary) !important; border-radius: var(--radius-md) !important; box-shadow: var(--shadow-lg) !important; }
+.leaflet-popup-tip { background: var(--bg-tooltip) !important; }
+.leaflet-popup-content { margin: 10px 14px !important; font-size: var(--text-sm) !important; }
+.leaflet-popup-close-button { color: var(--text-tertiary) !important; }
+
+/* --- Insights next to charts --- */
+.chart-with-insights {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+/* --- Chart Legend Custom --- */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+}
+
+.chart-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.chart-legend__item:hover { opacity: 0.7; }
+
+.chart-legend__dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* --- Stat Row (for compact metrics) --- */
+.stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stat-row:last-child { border-bottom: none; }
+
+.stat-row__label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.stat-row__value {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* --- Comparison Grid --- */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-4);
+}
+
+.comparison-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  transition: all var(--transition-fast);
+}
+
+.comparison-card:hover { border-color: var(--accent-purple); background: var(--accent-purple-dim); }
+
+.comparison-card__name {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
+  color: var(--text-primary);
+}
+
+/* --- Score Meter --- */
+.score-meter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.score-meter__bar {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-input);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.score-meter__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.8s ease;
+}
+
+.score-meter__fill--low { background: var(--accent-cyan); }
+.score-meter__fill--medium { background: var(--accent-amber); }
+.score-meter__fill--high { background: var(--accent-magenta); }
+
+.score-meter__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* --- Chart Tooltip Custom --- */
+.custom-tooltip {
+  background: var(--bg-tooltip) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: var(--radius-md) !important;
+  padding: var(--space-3) var(--space-4) !important;
+  box-shadow: var(--shadow-lg) !important;
+  font-family: var(--font-body) !important;
+}
+
+.custom-tooltip__title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.custom-tooltip__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.custom-tooltip__dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   CHARTS — Mobile Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .chart-card {
+    padding: var(--space-4);
+  }
+
+  .chart-card__header {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .chart-card__title { font-size: var(--text-sm); }
+  .chart-card__subtitle { font-size: 0.65rem; }
+
+  .chart-card__controls {
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: var(--space-2);
+  }
+  .chart-card__controls::-webkit-scrollbar { display: none; }
+
+  .chart-container {
+    min-height: 220px;
+  }
+  .chart-container--sm { min-height: 180px; }
+  .chart-container--lg { min-height: 280px; }
+  .chart-container--xl { min-height: 350px; }
+
+  .chart-container canvas {
+    max-height: 350px;
+  }
+
+  .map-container {
+    height: 300px;
+  }
+
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .score-meter {
+    gap: var(--space-2);
+  }
+  .score-meter__label { font-size: var(--text-xs); min-width: 30px; }
+}
+
+@media (max-width: 480px) {
+  .chart-container { min-height: 180px; }
+  .chart-container--lg { min-height: 220px; }
+  .chart-container canvas { max-height: 280px; }
+  .map-container { height: 250px; }
+}
